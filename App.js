@@ -1,30 +1,27 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React from 'react';
+import {Alert, StyleSheet, Text,  Dimensions, AppRegistry, View, Image, TouchableOpacity, TextInput} from 'react-native';
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+var widthScreen = Dimensions.get('window').width;
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
+        <View style={{flex: 1, flexDirection: 'column',alignItems: 'center'}}>
+            <View style={[styles.searchBar,styles.elevationLow]}>
+              <View style={{padding: 15}}>
+                <TextInput
+                  style={{height: 16, textColor : 'white'}}
+                  placeholder="Search here"
+                />
+              </View>
+          </View>
+          <TouchableOpacity onPress={()=>{Alert.alert("test")}} style={[styles.bulat,styles.elevationLow,{backgroundColor:"lightblue"}]}>
+              <Image
+                style={[styles.searchLogo]}
+                source={{uri:'https://png.icons8.com/metro/1600/search.png'}}
+              />
+          </TouchableOpacity>
+        </View>
     );
   }
 }
@@ -32,18 +29,40 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
+    flexDirection:'column'
+  },
+  bulat: {
+    position:'absolute',
+    justifyContent:'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    bottom:20,
+    right:20,
+    width:70,
+    height:70,
+    borderRadius:35
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  elevationLow: {
+          ...Platform.select({
+            ios: {
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+            },
+            android: {
+              elevation: 5,
+            },
+          }),
+        },
+  searchLogo: {
+    width:30,
+    height:30
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  searchBar: {
+    top:40,
+    width: widthScreen-20,
+    height: 40,
+    backgroundColor: 'white'
+  }
 });
