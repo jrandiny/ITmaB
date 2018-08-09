@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, StyleSheet, Text,  Dimensions, AppRegistry, View, Image, TouchableOpacity, TextInput, Platform} from 'react-native';
+import {Alert, StatusBar, StyleSheet, Text,  Dimensions, AppRegistry, View, Image, TouchableOpacity, TextInput, Platform} from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 
 import myColor from "./color.js"
@@ -11,7 +11,9 @@ const panjangLayar = Dimensions.get('window').height;
 export default class App extends React.Component {
   render() {
     return (
+
       <View style={styles.container}>
+        <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.3)"/>
         <View style={[styles.searchBar,styles.elevated]}>
           <TextInput
             style={styles.searchInput}
@@ -28,7 +30,7 @@ export default class App extends React.Component {
           enableCenterFocus = {false}
           style = {styles.mapArea}>
           <Image style={{width:500, height:1000}}
-            source={{uri:'https://picsum.photos/500/1000'}}/>
+            source={require("./mapTile/main.png")}/>
         </ImageZoom>
 
         <TouchableOpacity onPress={()=>{Alert.alert("test")}} style={[styles.fab,styles.elevated]}>
@@ -53,7 +55,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: myColor.appBg,
     flexDirection:'column',
-    alignItems:'center'
+    alignItems:'center',
+    paddingTop:dimens.statusBarHeight
   },
   fab: {
     backgroundColor:myColor.primary,
@@ -84,7 +87,8 @@ const styles = StyleSheet.create({
     height:dimens.fab.iconSize
   },
   searchInput:{
-    flex:1
+    flex:1,
+    marginLeft:dimens.searchBar.textMargin
   },
   searchBar: {
     top:dimens.searchBar.margin,
