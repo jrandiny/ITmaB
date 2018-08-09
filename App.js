@@ -1,21 +1,25 @@
 import React from 'react';
-import {Alert, StyleSheet, Text,  Dimensions, AppRegistry, View, Image, TouchableOpacity, TextInput} from 'react-native';
+import {Alert, StyleSheet, Text,  Dimensions, AppRegistry, View, Image, TouchableOpacity, TextInput, Platform} from 'react-native';
+import ImageZoom from 'react-native-image-pan-zoom';
 
-var widthScreen = Dimensions.get('window').width;
+import myColor from "./color.js"
+import dimens from "./dimensi.js"
+
+const lebarLayar = Dimensions.get('window').width;
+const panjangLayar = Dimensions.get('window').height;
 
 export default class App extends React.Component {
   render() {
     return (
-        <View style={{flex: 1, flexDirection: 'column',alignItems: 'center'}}>
-            <View style={[styles.searchBar,styles.elevationLow]}>
-              <View style={{padding: 15}}>
+        <View style={styles.container}>
+            <View style={[styles.searchBar,styles.elevated]}>
                 <TextInput
-                  style={{height: 16, textColor : 'white'}}
+                  style={styles.searchInput}
                   placeholder="Search here"
                 />
-              </View>
           </View>
-          <TouchableOpacity onPress={()=>{Alert.alert("test")}} style={[styles.bulat,styles.elevationLow,{backgroundColor:"lightblue"}]}>
+
+          <TouchableOpacity onPress={()=>{Alert.alert("test")}} style={[styles.fab,styles.elevated]}>
               <Image
                 style={[styles.searchLogo]}
                 source={{uri:'https://png.icons8.com/metro/1600/search.png'}}
@@ -29,40 +33,47 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    flexDirection:'column'
+    backgroundColor: myColor.appBg,
+    flexDirection:'column',
+    alignItems:'center'
   },
-  bulat: {
+  fab: {
+    backgroundColor:myColor.primary,
     position:'absolute',
     justifyContent:'center',
     alignItems: 'center',
-    bottom:20,
-    right:20,
-    width:70,
-    height:70,
-    borderRadius:35
+    bottom:dimens.fab.margin,
+    right:dimens.fab.margin,
+    width:dimens.fab.size,
+    height:dimens.fab.size,
+    borderRadius:dimens.fab.size/2
   },
-  elevationLow: {
-          ...Platform.select({
-            ios: {
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-            },
-            android: {
-              elevation: 5,
-            },
-          }),
-        },
+  elevated: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
   searchLogo: {
-    width:30,
-    height:30
+    width:dimens.fab.iconSize,
+    height:dimens.fab.iconSize
+  },
+  searchInput:{
+    flex:1
   },
   searchBar: {
-    top:40,
-    width: widthScreen-20,
-    height: 40,
-    backgroundColor: 'white'
+    top:dimens.searchBar.margin,
+    width: lebarLayar-(2*dimens.searchBar.margin),
+    height: dimens.searchBar.height,
+    backgroundColor: myColor.appBg,
+    flexDirection:"row",
+    alignItems:"center"
   }
 });
