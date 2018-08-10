@@ -6,7 +6,7 @@ const dimens = {
   },fab:{
     size:70,
     margin:20,
-    iconSize:30
+    iconSize:45
   },
   statusBarHeight:20
 

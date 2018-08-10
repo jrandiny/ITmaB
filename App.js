@@ -100,7 +100,7 @@ class FAB extends React.Component{
       <TouchableOpacity onPress={this.props.onClickAction} style={[styles.fab,styles.elevated]}>
         <Image
           style={[styles.searchLogo]}
-          source={{uri:'https://png.icons8.com/metro/1600/search.png'}}
+          source={require("./res/search.png")}
         />
       </TouchableOpacity>
 
@@ -198,8 +198,8 @@ const styles = StyleSheet.create({
     }),
   },
   searchLogo: {
-    width:dimens.fab.iconSize,
-    height:dimens.fab.iconSize
+    maxWidth:dimens.fab.iconSize,
+    maxHeight:dimens.fab.iconSize
   },
   searchInput:{
     flex:1,
