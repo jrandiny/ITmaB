@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "nama": "Toilet",
+    "jenis" : 1,
+    "gedung" : "Gedung Sipil",
+    "lantai"  : 9,
+    "deskripsi" : "HEEEEEEEEEEEEELP",
+    "jambuka" : 20,
+    "jamtutup"  : 30,
+    "pointx"  : 10,
+    "pointy"  : 10
+  },
+  {
+   "id": 2,
+    "nama": "Janette",
+    "jenis" : 3,
+    "gedung" : "Gedung Upil",
+    "lantai"  : 9,
+    "deskripsi" : "TOLOOONG",
+    "jambuka" : 2,
+    "jamtutup"  : 31,
+    "pointx"  : 1,
+    "pointy"  : 19
+  },
+  {
+   "id": 3,
+    "nama": "Toadette",
+    "jenis" : 3,
+    "gedung" : "Gedung CAS",
+    "lantai"  : 9,
+    "deskripsi" : "BOIIIII",
+    "jambuka" : 230,
+    "jamtutup"  : 310,
+    "pointx"  : 110,
+    "pointy"  : 110
+  }
+]

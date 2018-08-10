@@ -1,0 +1,11 @@
+[
+  {
+    "id": 0,
+    "nama":"Peta utama",
+    "jenis" :1,
+    "width" :1725,
+    "height" :3067,
+    "pointX" :0,
+    "pointY" :0
+  }
+]

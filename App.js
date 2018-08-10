@@ -4,7 +4,7 @@ import ImageZoom from 'react-native-image-pan-zoom';
 
 import myColor from "./color.js"
 import dimens from "./dimensi.js"
-import fileName from "./file.js"
+import fileName from "./mapData/file.js"
 import {mapSchema,poiSchema} from "./schema.js"
 
 const lebarLayar = Dimensions.get('window').width;
@@ -13,17 +13,38 @@ const panjangLayar = Dimensions.get('window').height;
 const Realm = require('realm');
 
 function importDb(realm){
-  //TODO import from json
-  realm.write(() => {
-    const obyek = realm.create('map',{
-      id: 0,
-      nama:"Peta utama",
-      jenis:1,
-      width:1725,
-      height:3067,
-      pointX:0,
-      pointY:0});
+  const poiObj = require("./mapData/POI.json");
+  for(i =0; i<poiObj.length;i++){
+      realm.write(() => {
+        realm.create('poi',{
+          id : poiObj[i].id,
+          nama : poiObj[i].nama,
+          jenis : poiObj[i].jenis,
+          gedung : poiObj[i].gedung,
+          lantai : poiObj[i].lantai,
+          deskripsi :poiObj[i].deskripsi,
+          jambuka : poiObj[i].jambuka,
+          jamtutup : poiObj[i].jamtutup,
+          pointx : poiObj[i].pointx,
+          pointy : poiObj[i].pointy
+      });
     });
+  }
+
+  const mapObj = require("./mapData/map.json");
+  for(i =0; i<mapObj.length;i++){
+      realm.write(() => {
+        realm.create('map',{
+          id : mapObj[i].id,
+          nama : mapObj[i].nama,
+          jenis : mapObj[i].jenis,
+          width : mapObj[i].width,
+          height : mapObj[i].height,
+          pointX :mapObj[i].pointX,
+          pointY : mapObj[i].pointY
+      });
+    });
+  }
 }
 
 class MapView extends React.Component{
