@@ -1,0 +1,72 @@
+"aulabarat": {
+  "id": 1,
+  "nama": "Aula Barat",
+  "jenis": "Gedung",
+  "gedung": "Aula Barat",
+  "lantai": "0",
+  "deskripsi": "Sebelah lapangan sipil",
+  "jambuka": "00:00",
+  "jamtutup": "00:00",
+  "pointx": "751",
+  "pointy": "2399"
+},
+"fisika": {
+  "id": 2,
+  "nama": "Gedung Fisika",
+  "jenis": "Gedung",
+  "gedung": "Gedung Fisika",
+  "lantai": "0",
+  "deskripsi": "Ada di sebelah barat",
+  "jambuka": "00:00",
+  "jamtutup": "00:00",
+  "pointx": "517",
+  "pointy": "2069"
+},
+"gkub": {
+  "id": 3,
+  "nama": "GKU Barat",
+  "jenis": "Gedung",
+  "gedung": "GKU Barat",
+  "lantai": "0",
+  "deskripsi": "Ada di sebelah barat",
+  "jambuka": "00:00",
+  "jamtutup": "00:00",
+  "pointx": "471",
+  "pointy": "1616"
+},
+"itbBookShop": {
+  "id": 4,
+  "nama": "ITB Bookshop",
+  "jenis": "Fasilitas",
+  "gedung": "ATM Center bagian Barat",
+  "lantai": "1",
+  "deskripsi": "Tutup pada hari libur",
+  "jambuka": "00:00",
+  "jamtutup": "00:00",
+  "pointx": "821",
+  "pointy": "2392"
+},
+"labradar": {
+  "id": 5,
+  "nama": "Lab Radar",
+  "jenis": "Gedung",
+  "gedung": "Lab Radar",
+  "lantai": "1",
+  "deskripsi": "Di sebelah barat GKU Barat",
+  "jambuka": "00:00",
+  "jamtutup": "00:00",
+  "pointx": "298",
+  "pointy": "1735"
+},
+"sipil": {
+  "id": 6,
+  "nama": "Gedung Sipil",
+  "jenis": "Gedung",
+  "gedung": "Gedung Sipil",
+  "lantai": "1",
+  "deskripsi": "Di sebelah utara lapangan sipil",
+  "jambuka": "00:00",
+  "jamtutup": "00:00",
+  "pointx": "524",
+  "pointy": "2273"
+}

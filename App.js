@@ -4,43 +4,119 @@ import ImageZoom from 'react-native-image-pan-zoom';
 
 import myColor from "./color.js"
 import dimens from "./dimensi.js"
+import fileName from "./file.js"
+import {mapSchema,poiSchema} from "./schema.js"
 
 const lebarLayar = Dimensions.get('window').width;
 const panjangLayar = Dimensions.get('window').height;
 
-export default class App extends React.Component {
-  render() {
-    return (
+const Realm = require('realm');
 
-      <View style={styles.container}>
-        <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.3)"/>
-        <View style={[styles.searchBar,styles.elevated]}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search here"
-          />
-        </View>
+function importDb(realm){
+  //TODO import from json
+  realm.write(() => {
+    const obyek = realm.create('map',{
+      id: 0,
+      nama:"Peta utama",
+      jenis:1,
+      width:1725,
+      height:3067,
+      pointX:0,
+      pointY:0});
+    });
+}
 
-        <ImageZoom
-          cropWidth  = {lebarLayar}
-          cropHeight = {panjangLayar}
-          imageWidth = {500}
-          imageHeight = {1000}
-          minScale = {1}
-          enableCenterFocus = {false}
-          style = {styles.mapArea}>
-          <Image style={{width:500, height:1000}}
-            source={require("./mapTile/main.png")}/>
-        </ImageZoom>
+class MapView extends React.Component{
+  render(){
+    const mainMap = this.props.realm.objects("map").filtered('id = 1');
+    const mapTile = fileName[mainMap[0].id].file;
 
-        <TouchableOpacity onPress={()=>{Alert.alert("test")}} style={[styles.fab,styles.elevated]}>
-          <Image
-            style={[styles.searchLogo]}
-            source={{uri:'https://png.icons8.com/metro/1600/search.png'}}
-          />
-        </TouchableOpacity>
-      </View>
+    return(
+      <ImageZoom
+        cropWidth  = {lebarLayar}
+        cropHeight = {panjangLayar}
+        imageWidth = {mainMap[0].width}
+        imageHeight = {mainMap[0].height}
+        minScale = {1}
+        enableCenterFocus={false}
+        style = {styles.mapArea}>
+        <Image style={{width:mainMap[0].width, height:mainMap[0].height}}
+          source={mapTile}/>
+      </ImageZoom>
     );
+  }
+}
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { realm: null };
+
+    this.initDb();
+  }
+
+  initDb() {
+    Realm.open({
+      schema: [mapSchema,poiSchema]
+    }).then(realm => {
+      if(realm.objects("map").length<1){
+        importDb(realm);
+      }
+
+      this.setState({ realm });
+    });
+
+
+  }
+
+  render() {
+
+    if(this.state.realm){
+      return (
+        <View style={styles.container}>
+          <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.3)"/>
+          <View style={[styles.searchBar,styles.elevated]}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search here"
+            />
+          </View>
+
+
+          <Text>dsadad</Text>
+          <Text>asda</Text>
+          <MapView realm={this.state.realm}/>
+
+          <TouchableOpacity onPress={()=>{Alert.alert("test")}} style={[styles.fab,styles.elevated]}>
+            <Image
+              style={[styles.searchLogo]}
+              source={{uri:'https://png.icons8.com/metro/1600/search.png'}}
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    }else {
+      return (
+        <View style={styles.container}>
+          <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.3)"/>
+          <View style={[styles.searchBar,styles.elevated]}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search here"
+            />
+          </View>
+
+          <TouchableOpacity onPress={()=>{Alert.alert("test")}} style={[styles.fab,styles.elevated]}>
+            <Image
+              style={[styles.searchLogo]}
+              source={{uri:'https://png.icons8.com/metro/1600/search.png'}}
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
+
   }
 }
 
