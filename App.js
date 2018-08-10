@@ -28,8 +28,16 @@ function importDb(realm){
 
 class MapView extends React.Component{
   render(){
-    const mainMap = this.props.realm.objects("map").filtered('id = 1');
+    const mainMap = this.props.realm.objects("map").filtered("id = "+this.props.mapId);
     const mapTile = fileName[mainMap[0].id].file;
+
+    let minScale = 0.5;
+
+    if(mainMap[0].height > mainMap[0].width){
+      minScale = panjangLayar / mainMap[0].height;
+    }else {
+      minScale = lebarLayar / mainMap[0].width;
+    }
 
     return(
       <ImageZoom
@@ -37,12 +45,39 @@ class MapView extends React.Component{
         cropHeight = {panjangLayar}
         imageWidth = {mainMap[0].width}
         imageHeight = {mainMap[0].height}
-        minScale = {1}
+        minScale = {minScale}
         enableCenterFocus={false}
         style = {styles.mapArea}>
         <Image style={{width:mainMap[0].width, height:mainMap[0].height}}
           source={mapTile}/>
       </ImageZoom>
+    );
+  }
+}
+
+class SearchBox extends React.Component{
+  render(){
+    return(
+      <View style={[styles.searchBar,styles.elevated]}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search here"
+        />
+      </View>
+    );
+  }
+}
+
+class FAB extends React.Component{
+  render(){
+    return(
+      <TouchableOpacity onPress={()=>{Alert.alert("test")}} style={[styles.fab,styles.elevated]}>
+        <Image
+          style={[styles.searchLogo]}
+          source={{uri:'https://png.icons8.com/metro/1600/search.png'}}
+        />
+      </TouchableOpacity>
+
     );
   }
 }
@@ -75,43 +110,21 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.3)"/>
-          <View style={[styles.searchBar,styles.elevated]}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search here"
-            />
-          </View>
+          <SearchBox/>
 
+          <MapView mapId={0} realm={this.state.realm}/>
 
-          <Text>dsadad</Text>
-          <Text>asda</Text>
-          <MapView realm={this.state.realm}/>
+          <FAB />
 
-          <TouchableOpacity onPress={()=>{Alert.alert("test")}} style={[styles.fab,styles.elevated]}>
-            <Image
-              style={[styles.searchLogo]}
-              source={{uri:'https://png.icons8.com/metro/1600/search.png'}}
-            />
-          </TouchableOpacity>
         </View>
       );
     }else {
       return (
         <View style={styles.container}>
           <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.3)"/>
-          <View style={[styles.searchBar,styles.elevated]}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search here"
-            />
-          </View>
+          <SearchBox/>
 
-          <TouchableOpacity onPress={()=>{Alert.alert("test")}} style={[styles.fab,styles.elevated]}>
-            <Image
-              style={[styles.searchLogo]}
-              source={{uri:'https://png.icons8.com/metro/1600/search.png'}}
-            />
-          </TouchableOpacity>
+          <FAB />
         </View>
       );
     }
