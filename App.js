@@ -27,6 +27,10 @@ function importDb(realm){
 }
 
 class MapView extends React.Component{
+  moveMap(){
+    this.refs.petaUtama.centerOn({ x: 100, y: 100, scale:2, duration:1000 });
+  }
+
   render(){
     const mainMap = this.props.realm.objects("map").filtered("id = "+this.props.mapId);
     const mapTile = fileName[mainMap[0].id].file;
@@ -41,6 +45,7 @@ class MapView extends React.Component{
 
     return(
       <ImageZoom
+        ref = "petaUtama"
         cropWidth  = {lebarLayar}
         cropHeight = {panjangLayar}
         imageWidth = {mainMap[0].width}
@@ -71,7 +76,7 @@ class SearchBox extends React.Component{
 class FAB extends React.Component{
   render(){
     return(
-      <TouchableOpacity onPress={()=>{Alert.alert("test")}} style={[styles.fab,styles.elevated]}>
+      <TouchableOpacity onPress={this.props.onClickAction} style={[styles.fab,styles.elevated]}>
         <Image
           style={[styles.searchLogo]}
           source={{uri:'https://png.icons8.com/metro/1600/search.png'}}
@@ -85,7 +90,7 @@ class FAB extends React.Component{
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { realm: null };
+    this.state = { realm: null};
 
     this.initDb();
   }
@@ -112,9 +117,9 @@ export default class App extends React.Component {
           <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.3)"/>
           <SearchBox/>
 
-          <MapView mapId={0} realm={this.state.realm}/>
+          <MapView ref={instance => { this.mapChild = instance; }} mapId={0} realm={this.state.realm}/>
 
-          <FAB />
+          <FAB onClickAction={()=>{this.mapChild.moveMap(); }}/>
 
         </View>
       );
