@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, StatusBar, StyleSheet, Text,  Dimensions, AppRegistry, View, Image, TouchableOpacity, TextInput, Platform} from 'react-native';
+import {Alert, StatusBar, TouchableHighlight,  TouchableNativeFeedback, FlatList, StyleSheet, Text,  Dimensions, AppRegistry, View, Image, TouchableOpacity, TextInput, Platform} from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 
 import myColor from "./color.js"
@@ -26,7 +26,8 @@ function importDb(realm){
           jambuka : poiObj[i].jambuka,
           jamtutup : poiObj[i].jamtutup,
           pointx : poiObj[i].pointx,
-          pointy : poiObj[i].pointy
+          pointy : poiObj[i].pointy,
+          mapId : poiObj[i].mapId
       });
     });
   }
@@ -82,27 +83,84 @@ class MapView extends React.Component{
 }
 
 class SearchBox extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {searchText:"",searchResults:null,query:null};
+  }
+
+  search(){
+    let query = "nama CONTAINS '"+this.state.searchText+"'";
+    let searchResults = this.props.realm.objects("poi").filtered(query);
+    this.setState({searchResults:searchResults});
+    this.setState({query:query});
+  }
+
   render(){
-    return(
-      <View style={[styles.searchBar,styles.elevated]}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search here"
-        />
-      </View>
-    );
+    if(this.state.searchResults){
+      var info = "";
+
+      for(i=0;i<this.state.searchResults.length;i++){
+        info = info + this.state.searchResults[i].id+" ";
+      }
+
+      return(
+        <View>
+          <View style={[styles.searchBar,styles.elevated]}>
+            <TextInput
+              onChangeText={(text)=>{this.setState({searchText:text});}}
+              onSubmitEditing={()=>{this.search()}}
+              style={styles.searchInput}
+              placeholder="Search here"
+            />
+          </View>
+          <View>
+            <FlatList
+              style={styles.searchList}
+            data={this.state.searchResults}
+            renderItem={({item}) =>
+                    <TouchableNativeFeedback style={styles.item}>
+                      <View>
+                        <Text>{item.nama}</Text>
+                      </View>
+                    </TouchableNativeFeedback>}
+            keyExtractor={(item, index) => item.id.toString()}
+            />
+          </View>
+        </View>
+
+      );
+    }else{
+      return(
+        <View style={[styles.searchBar,styles.elevated]}>
+          <TextInput
+            onChangeText={(text)=>{this.setState({searchText:text});}}
+            onSubmitEditing={()=>{this.search()}}
+            style={styles.searchInput}
+            placeholder="Search here"
+          />
+        </View>
+      );
+    }
+
   }
 }
 
 class FAB extends React.Component{
   render(){
     return(
-      <TouchableOpacity onPress={this.props.onClickAction} style={[styles.fab,styles.elevated]}>
-        <Image
-          style={[styles.searchLogo]}
-          source={require("./res/search.png")}
-        />
-      </TouchableOpacity>
+      <View style={[styles.fab,styles.elevated]}>
+        <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackgroundBorderless()} onPress={this.props.onClickAction}>
+          <View style={styles.fabIn}>
+            <Image
+              style={[styles.searchLogo]}
+              source={require("./res/search.png")}
+            />
+          </View>
+        </TouchableNativeFeedback>
+      </View>
+
+
+
 
     );
   }
@@ -136,7 +194,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.3)"/>
-          <SearchBox/>
+          <SearchBox realm={this.state.realm}/>
 
           <MapView ref={instance => { this.mapChild = instance; }} mapId={0} realm={this.state.realm}/>
 
@@ -184,6 +242,13 @@ const styles = StyleSheet.create({
     height:dimens.fab.size,
     borderRadius:dimens.fab.size/2
   },
+  fabIn: {
+    justifyContent:'center',
+    alignItems: 'center',
+    width:dimens.fab.size,
+    height:dimens.fab.size,
+    borderRadius:dimens.fab.size/2
+  },
   elevated: {
     ...Platform.select({
       ios: {
@@ -212,5 +277,15 @@ const styles = StyleSheet.create({
     backgroundColor: myColor.appBg,
     flexDirection:"row",
     alignItems:"center"
+  },
+  searchList:{
+    top:dimens.searchBar.margin,
+    backgroundColor:myColor.appBg,
+    elevation:3,
+    flexGrow:0,
+    paddingBottom:dimens.searchBar.margin
+  },
+  item:{
+    height:dimens.searchResult.itemHeight
   }
 });

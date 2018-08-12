@@ -8,7 +8,10 @@ const dimens = {
     margin:20,
     iconSize:45
   },
-  statusBarHeight:20
+  searchResult:{
+    itemHeight:40
+  },
+  statusBarHeight:30
 
 };
 

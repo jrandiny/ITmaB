@@ -9,7 +9,8 @@
     "jambuka" : 20,
     "jamtutup"  : 30,
     "pointx"  : 10,
-    "pointy"  : 10
+    "pointy"  : 10,
+    "mapId" : 1
   },
   {
    "id": 2,
@@ -21,7 +22,8 @@
     "jambuka" : 2,
     "jamtutup"  : 31,
     "pointx"  : 1,
-    "pointy"  : 19
+    "pointy"  : 19,
+    "mapId" : 1
   },
   {
    "id": 3,
@@ -33,6 +35,7 @@
     "jambuka" : 230,
     "jamtutup"  : 310,
     "pointx"  : 110,
-    "pointy"  : 110
+    "pointy"  : 110,
+    "mapId" : 1
   }
 ]
