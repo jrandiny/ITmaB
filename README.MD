@@ -21,5 +21,8 @@ Untuk versi debug jalankan
 Untuk versi release, compile dengan gradle  
 `./gradlew assembleRelease`
 
+### Compiling (IOS)
+Saat ini belum kompatibel dengan IOS
+
 ## License
 Program ini didistribusikan dengan license MIT
