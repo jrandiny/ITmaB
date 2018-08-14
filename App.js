@@ -83,34 +83,21 @@ class MapView extends React.Component{
 }
 
 class SearchBox extends React.Component{
-  constructor(props){
-    super(props);
-    this.state = {searchText:"",searchResults:null,query:null};
-  }
-
-  search(){
-    let query = "nama CONTAINS '"+this.state.searchText+"'";
-    let searchResults = this.props.realm.objects("poi").filtered(query);
-    this.setState({searchResults:searchResults});
-    this.setState({query:query});
-  }
 
   render(){
-    if(this.state.searchResults){
+    if(this.props.searchResults){
       var info = "";
 
-      for(i=0;i<this.state.searchResults.length;i++){
-        info = info + this.state.searchResults[i].id+" ";
+      for(i=0;i<this.props.searchResults.length;i++){
+        info = info + this.props.searchResults[i].id+" ";
       }
-
-      var mapInstance = this.props.mapp;
 
       return(
         <View>
           <View style={[styles.searchBar,styles.elevated]}>
             <TextInput
-              onChangeText={(text)=>{this.setState({searchText:text});}}
-              onSubmitEditing={()=>{this.search()}}
+              onChangeText={(text)=>{this.props.textCallback(text)}}
+              onSubmitEditing={()=>{this.props.searchFn()}}
               style={styles.searchInput}
               placeholder="Search here"
             />
@@ -118,10 +105,11 @@ class SearchBox extends React.Component{
           <View>
             <FlatList
               style={styles.searchList}
-            data={this.state.searchResults}
+            data={this.props.searchResults}
             renderItem={({item}) =>
-                    <TouchableNativeFeedback onPress={()=>{Alert.alert("test");}}>
+                    <TouchableNativeFeedback onPress={this.props.pindah.bind(this,item.pointx,item.pointy,2,1000)}>
                       <View style={styles.item}>
+
                         <Text>{item.nama}</Text>
                         <Text>{item.gedung}</Text>
                       </View>
@@ -136,8 +124,8 @@ class SearchBox extends React.Component{
       return(
         <View style={[styles.searchBar,styles.elevated]}>
           <TextInput
-            onChangeText={(text)=>{this.setState({searchText:text});}}
-            onSubmitEditing={()=>{this.search()}}
+            onChangeText={(text)=>{this.props.textCallback(text)}}
+            onSubmitEditing={()=>{this.props.searchFn()}}
             style={styles.searchInput}
             placeholder="Search here"
           />
@@ -161,10 +149,6 @@ class FAB extends React.Component{
           </View>
         </TouchableNativeFeedback>
       </View>
-
-
-
-
     );
   }
 }
@@ -172,9 +156,15 @@ class FAB extends React.Component{
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { realm: null};
-
+    this.state = { realm: null,searchText:"",searchResults:null};
+    this.search = this.search.bind(this);
     this.initDb();
+  }
+
+  search(){
+    let query = "nama CONTAINS '"+this.state.searchText+"'";
+    let searchResults = this.state.realm.objects("poi").filtered(query);
+    this.setState({searchResults:searchResults});
   }
 
   initDb() {
@@ -187,21 +177,21 @@ export default class App extends React.Component {
 
       this.setState({ realm });
     });
-
-
   }
 
   render() {
-
     if(this.state.realm){
       return (
         <View style={styles.container}>
           <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.3)"/>
 
-
           <MapView ref={instance => { this.mapChild = instance; }} mapId={0} realm={this.state.realm}/>
 
-          <SearchBox mapp={this.mapChild} realm={this.state.realm}/>
+          <SearchBox
+            searchResults={this.state.searchResults}
+            textCallback={(text)=>{this.setState({searchText:text});}}
+            searchFn={this.search}
+            pindah={(xLoc,yLoc,scale,dur)=>{this.mapChild.moveMap(xLoc,yLoc,scale,dur)}}/>
 
           <FAB onClickAction={()=>{this.mapChild.moveMap(300,300,2,1000); }}/>
 
