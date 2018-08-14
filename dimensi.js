@@ -9,7 +9,8 @@ const dimens = {
     iconSize:45
   },
   searchResult:{
-    itemHeight:40
+    itemHeight:50,
+    padding:20
   },
   statusBarHeight:30
 

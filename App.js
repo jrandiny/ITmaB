@@ -49,8 +49,8 @@ function importDb(realm){
 }
 
 class MapView extends React.Component{
-  moveMap(){
-    this.refs.petaUtama.centerOn({ x: 100, y: 100, scale:2, duration:1000 });
+  moveMap(xLoc,yLoc,scale,animDur){
+    this.refs.petaUtama.centerOn({ x: xLoc, y: yLoc, scale:scale, duration:animDur });
   }
 
   render(){
@@ -103,6 +103,8 @@ class SearchBox extends React.Component{
         info = info + this.state.searchResults[i].id+" ";
       }
 
+      var mapInstance = this.props.mapp;
+
       return(
         <View>
           <View style={[styles.searchBar,styles.elevated]}>
@@ -118,9 +120,10 @@ class SearchBox extends React.Component{
               style={styles.searchList}
             data={this.state.searchResults}
             renderItem={({item}) =>
-                    <TouchableNativeFeedback style={styles.item}>
-                      <View>
+                    <TouchableNativeFeedback onPress={()=>{Alert.alert("test");}}>
+                      <View style={styles.item}>
                         <Text>{item.nama}</Text>
+                        <Text>{item.gedung}</Text>
                       </View>
                     </TouchableNativeFeedback>}
             keyExtractor={(item, index) => item.id.toString()}
@@ -194,11 +197,13 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.3)"/>
-          <SearchBox realm={this.state.realm}/>
+
 
           <MapView ref={instance => { this.mapChild = instance; }} mapId={0} realm={this.state.realm}/>
 
-          <FAB onClickAction={()=>{this.mapChild.moveMap(); }}/>
+          <SearchBox mapp={this.mapChild} realm={this.state.realm}/>
+
+          <FAB onClickAction={()=>{this.mapChild.moveMap(300,300,2,1000); }}/>
 
         </View>
       );
@@ -286,6 +291,11 @@ const styles = StyleSheet.create({
     paddingBottom:dimens.searchBar.margin
   },
   item:{
-    height:dimens.searchResult.itemHeight
+    height:dimens.searchResult.itemHeight,
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"space-between",
+    paddingLeft:dimens.searchResult.padding,
+    paddingRight:dimens.searchResult.padding
   }
 });
