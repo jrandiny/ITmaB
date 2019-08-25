@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "react": "16.4.1",
-    "react-native": "0.56.0"
+    "react-native": "^0.60.5"
   },
   "devDependencies": {
     "babel-jest": "23.4.2",
@@ -16,7 +16,7 @@
     "jest": "23.4.2",
     "react-native-image-pan-zoom": "^2.1.7",
     "react-test-renderer": "16.4.1",
-    "realm": "^2.14.2"
+    "realm": "^2.29.2"
   },
   "jest": {
     "preset": "react-native"
